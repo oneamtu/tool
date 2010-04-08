@@ -182,6 +182,10 @@ public class TOOLVisionLink {
     native private void cppPixEstimate(int pixelX, int pixelY,
                                        float objectHeight,
                                        double[] estimateResult);
+                                       
+    native private void cppGetCameraCalibrate(float[] calibrateArray);
+    
+    native private void cppSetCameraCalibrate(float[] calibrateArray);
 
     //Load the cpp library that implements the native methods
     static
@@ -282,6 +286,39 @@ public class TOOLVisionLink {
     }
     //set the processTime
     public void setProcessTime(int p) {
-	processTime = p;
+    processTime = p;
     }
+    
+    
+    public float[] getCameraCalibrate() {
+        float[] calibrateArray = new float[9];
+        if (visionLinkSuccessful) {
+            try {
+                cppGetCameraCalibrate(calibrateArray);
+            } catch(Throwable e) {
+                System.err.println("Error in cpp sub system. \n"+
+                                   "   getCameraCalibrate failed.");
+            }
+        }
+        else
+            System.out.println("VisionLink inactive," +
+                               " so cameraCalibrate does not work");
+
+        return calibrateArray;
+    }
+    
+    public void setCameraCalibrate(float[] calibrateArray) {
+        if (visionLinkSuccessful) {
+            try {
+                cppSetCameraCalibrate(calibrateArray);
+            } catch(Throwable e) {
+                System.err.println("Error in cpp sub system. \n"+
+                                   "   getCameraCalibrate failed.");
+            }
+        }
+        else
+            System.out.println("VisionLink inactive," +
+                               " so cameraCalibrate does not work");
+    }
+    
 }

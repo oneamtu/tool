@@ -27,12 +27,14 @@ import TOOL.TOOLModule;
 public class CalibrateModule extends TOOLModule {
 
     private Calibrate calibrate;
+    private CameraCalibratePanel cameraCalibratePanel;
 
     public CalibrateModule(TOOL tool) {
         super(tool);
 
         calibrate = new Calibrate(t);
         t.getDataManager().addDataListener(calibrate);
+        cameraCalibratePanel = new CameraCalibratePanel(this);
 
         // add the calibrate panel as a key listener; it handles all the
         // work

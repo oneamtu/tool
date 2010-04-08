@@ -28,7 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.*;
@@ -40,15 +40,15 @@ import TOOL.Calibrate.Calibrate;
 import TOOL.Calibrate.CalibrateModule;
 import TOOL.ColorEdit.ColorEditModule;
 import TOOL.ColorEdit.ColorEdit;
-import TOOL.Classifier.ClassifierModule;
-import TOOL.Learning.LearningModule;
+//import TOOL.Classifier.ClassifierModule;
+import TOOL.VisionTester.VisionTesterModule;
 import TOOL.Console.Console;
 import TOOL.GUI.MultiTabbedPane;
 import TOOL.Image.*;
 import TOOL.Net.NetworkModule;
 import TOOL.Net.RobotViewModule;
-import TOOL.PlayBookEditor.PlayBookEditorModule;
-import TOOL.SQL.SQLModule;
+//import TOOL.PlayBookEditor.PlayBookEditorModule;
+//import TOOL.SQL.SQLModule;
 import TOOL.WorldController.WorldControllerModule;
 
 import java.util.prefs.*;
@@ -86,7 +86,7 @@ public class TOOL implements ActionListener, PropertyChangeListener{
 
     private JFrame mainWindow;
     private JSplitPane split_pane;
-    private JTabbedPane tabs;
+    //private JTabbedPane tabs;
     private boolean split_changing;
     public String wcLastDirectory;
     //menu components
@@ -270,7 +270,7 @@ public class TOOL implements ActionListener, PropertyChangeListener{
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         if (System.getProperty("os.name").contains("Mac")) {
-            mainWindow.setDefaultLookAndFeelDecorated(true);
+            JFrame.setDefaultLookAndFeelDecorated(true);
         }
         else if (System.getProperty("os.name").contains("Windows")) {
             try {
@@ -645,7 +645,7 @@ public class TOOL implements ActionListener, PropertyChangeListener{
     }
 
     public static void main(String[] args) {
-        TOOL t = new TOOL();
+       new TOOL();
     }
 
     /**

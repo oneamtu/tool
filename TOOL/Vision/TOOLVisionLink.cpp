@@ -4,6 +4,7 @@
  *
  * @author Johannes Strom
  * @author Mark McGranagan
+ * @author Octavian Neamtu 
  *
  * @date November 2008
  */
@@ -22,6 +23,7 @@
 #include "Sensors.h"
 #include "SensorDef.h"       // for NUM_SENSORS
 #include "Kinematics.h"      // for NUM_JOINTS
+//#include "CameraCalibrate.h"
 #include "Structs.h"         // for estimate struct
 #include "VisualFieldObject.h"
 #include "VisualLine.h"
@@ -60,9 +62,9 @@ extern "C" {
 #endif
 
     //Instantiate the vision stuff
-    static shared_ptr<Sensors> sensors(new Sensors());
-    static shared_ptr<NaoPose> pose(new NaoPose(sensors));
-    static shared_ptr<Profiler> profiler(new Profiler(micro_time));
+    static boost::shared_ptr<Sensors> sensors(new Sensors());
+    static boost::shared_ptr<NaoPose> pose(new NaoPose(sensors));
+    static boost::shared_ptr<Profiler> profiler(new Profiler(micro_time));
     static Vision vision(pose, profiler);
 
     JNIEXPORT void JNICALL Java_TOOL_Vision_TOOLVisionLink_cppProcessImage
@@ -253,7 +255,10 @@ extern "C" {
         jmethodID setVisualCornersInfo = env->GetMethodID(javaClass, "setVisualCornersInfo",
                                                           "(IIFFI)V");
         //push data from the lines object
-        const vector<VisualLine> *lines = vision.fieldLines->getLines();
+        vector<VisualLine> expectedLines = pose->getExpectedVisualLinesFromFieldPosition(270, 180, 0);
+            //368, 67, 1.57 + 3.14);
+        const vector<VisualLine> *lines = &expectedLines;
+            //vision.fieldLines->getLines();
         for (vector<VisualLine>::const_iterator i = lines->begin();
              i!= lines->end(); i++) {
             env->CallVoidMethod(jobj, prepPointBuffers,
@@ -328,6 +333,27 @@ extern "C" {
         estimate_array[4] = est.y;
 
         env->ReleaseDoubleArrayElements( estimateResult, buf_estimate, 0);
+    }
+
+JNIEXPORT void JNICALL Java_TOOL_Vision_TOOLVisionLink_cppGetCameraCalibrate
+    (JNIEnv * env, jobject jobj, jfloatArray cameraCalibrate) {
+
+         jfloat * cam_calibrate =
+            env->GetFloatArrayElements( cameraCalibrate, 0);
+         float * cam_calib = (float *) cam_calibrate;
+         for (int i = 0; i < 9; i++)
+            cam_calib[i] = CameraCalibrate::CAMERA_CALIBRATE[i];
+         env->ReleaseFloatArrayElements( cameraCalibrate, cam_calibrate, 0);
+    }
+
+JNIEXPORT void JNICALL Java_TOOL_Vision_TOOLVisionLink_cppSetCameraCalibrate
+    (JNIEnv * env, jobject jobj, jfloatArray cameraCalibrate) {
+
+         jfloat * cam_calibrate =
+            env->GetFloatArrayElements( cameraCalibrate, 0);
+         float * cam_calib = (float *) cam_calibrate;
+         CameraCalibrate::UpdateWithParams(cam_calib);
+         env->ReleaseFloatArrayElements( cameraCalibrate, cam_calibrate, 0);
     }
 
 #ifdef __cplusplus
