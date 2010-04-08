@@ -40,6 +40,7 @@ import TOOL.Calibrate.Calibrate;
 import TOOL.Calibrate.CalibrateModule;
 import TOOL.ColorEdit.ColorEditModule;
 import TOOL.ColorEdit.ColorEdit;
+import TOOL.Learning.LearningModule;
 //import TOOL.Classifier.ClassifierModule;
 import TOOL.VisionTester.VisionTesterModule;
 import TOOL.Console.Console;
