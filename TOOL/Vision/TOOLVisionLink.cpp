@@ -255,7 +255,7 @@ extern "C" {
         jmethodID setVisualCornersInfo = env->GetMethodID(javaClass, "setVisualCornersInfo",
                                                           "(IIFFI)V");
         //push data from the lines object
-        vector<VisualLine> expectedLines = pose->getExpectedVisualLinesFromFieldPosition(270, 180, 0);
+        vector<VisualLine> expectedLines = pose->getExpectedVisualLinesFromFieldPosition(385, 180, 0);
             //368, 67, 1.57 + 3.14);
         const vector<VisualLine> *lines = &expectedLines;
             //vision.fieldLines->getLines();
